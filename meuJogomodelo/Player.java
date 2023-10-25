@@ -13,10 +13,12 @@ public class Player {
     private Image imagem;
     private int altura, largura;
     private List <Tiro> tiros;
+    private boolean isVisivel;
 
     public Player(){
         this.x = 100;
         this.y = 100;
+        isVisivel = true;
 
         tiros = new ArrayList<Tiro>();
     }
@@ -35,6 +37,10 @@ public class Player {
 
     public void tiroSimples() {
         this.tiros.add(new Tiro(x + largura, y + (altura/2)));
+    }
+
+    public Rectangle getBounds() {
+        return new Rectangle(x,y,largura,altura);
     }
 
     public void keyPressed(KeyEvent tecla) {
@@ -82,6 +88,14 @@ public class Player {
     }
 
 
+    public boolean isVisivel() {
+        return isVisivel;
+    }
+
+    public void setVisivel(boolean isVisivel) {
+        this.isVisivel = isVisivel;
+    }
+    
     public int getX() {
         return x;
     }

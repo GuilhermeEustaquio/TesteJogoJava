@@ -34,12 +34,16 @@ public class Enemy1 {
             //}
     }
 
+    public Rectangle getBounds() {
+        return new Rectangle(x,y,largura,altura);
+    }
+
     
     public boolean isVisivel() {
         return isVisivel;
     }
 
-    public void setVisible(boolean isVisivel) {
+    public void setVisivel(boolean isVisivel) {
         this.isVisivel = isVisivel;
     }
 

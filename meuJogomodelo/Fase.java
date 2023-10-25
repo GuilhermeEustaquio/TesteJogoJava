@@ -12,6 +12,7 @@ public class Fase extends JPanel implements ActionListener {
     private Player player;
     private Timer timer;
     private List<Enemy1> enemy1;
+    private boolean emJogo;
 
     public Fase(){
         setFocusable(true);
@@ -29,6 +30,7 @@ public class Fase extends JPanel implements ActionListener {
         timer.start();
 
         inicializaInimigos();
+        emJogo = true;
         
     }
 
@@ -46,21 +48,28 @@ public class Fase extends JPanel implements ActionListener {
     
     public void paint(Graphics g) {
         Graphics2D graficos = (Graphics2D) g;
-        graficos.drawImage(fundo, 0, 0, null);
-        graficos.drawImage(player.getImagem(),player.getX(), player.getY(), this);
+        if(emJogo == true){
+            graficos.drawImage(fundo, 0, 0, null);
+            graficos.drawImage(player.getImagem(),player.getX(), player.getY(), this);
 
-         List<Tiro> tiros = player.getTiros();
-        for(int i = 0; i < tiros.size(); i++) {
+            List<Tiro> tiros = player.getTiros();
+            for(int i = 0; i < tiros.size(); i++) {
             Tiro m = tiros.get(i);
             m.load();
             graficos.drawImage(m.getImagem(), m.getX(), m.getY(), this);
-        }
+            }
 
-        for (int i = 0; i < enemy1.size(); i++){
-            Enemy1 in = enemy1.get(i);
-            in.load();
-            graficos.drawImage(in.getImagem(), in.getX(), in.getY(), this);
+            for (int i = 0; i < enemy1.size(); i++){
+                Enemy1 in = enemy1.get(i);
+                in.load();
+                graficos.drawImage(in.getImagem(), in.getX(), in.getY(), this);
+            }
         }
+        else{
+            ImageIcon fimJogo = new ImageIcon("res\\fundo.jpg"); //tela gameover
+            graficos.drawImage(fimJogo.getImage(), 0, 0, null);
+        }
+        
         g.dispose();
     }
 
@@ -86,9 +95,38 @@ public class Fase extends JPanel implements ActionListener {
                 enemy1.remove(i);
             }
         }
-        
+        checarColisoes();
         repaint();
 
+    }
+
+    public void checarColisoes() {
+        Rectangle formaNave = player.getBounds();
+        Rectangle formaEnemy1;
+        Rectangle formaTiro;
+
+        for(int i = 0; i < enemy1.size(); i++) {
+            Enemy1 tempEnemy1 = enemy1.get(i);
+            formaEnemy1 = tempEnemy1.getBounds();
+                if(formaNave.intersects(formaEnemy1)) {
+                    player.setVisivel(false);
+                    tempEnemy1.setVisivel(false);
+                    emJogo = false;
+                }
+        }
+        List<Tiro> tiros = player.getTiros();
+        for (int i = 0; i < tiros.size(); i++) {
+            Tiro tempTiro = tiros.get(i);
+            formaTiro = tempTiro.getBounds();
+            for(int o = 0; o < enemy1.size(); o++) {
+                Enemy1 tempEnemy1 = enemy1.get(o);
+                formaEnemy1 = tempEnemy1.getBounds();
+                if(formaTiro.intersects(formaEnemy1)){
+                    tempEnemy1.setVisivel(false);
+                    tempTiro.setVisivel(false);
+                }
+            }
+        }
     }
 
     private class TecladoAdapter extends KeyAdapter {
@@ -103,5 +141,6 @@ public class Fase extends JPanel implements ActionListener {
             player.keyRelease(e);
         }
     }
+    
 
 }

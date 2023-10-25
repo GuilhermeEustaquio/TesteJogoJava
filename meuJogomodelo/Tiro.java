@@ -35,7 +35,7 @@ public class Tiro {
     }
 
     public Rectangle getBounds() {
-        return new Rectangle(x, y, largura, altura);
+        return new Rectangle(x,y,largura,altura);
     }
 
     
@@ -43,7 +43,7 @@ public class Tiro {
         return isVisivel;
     }
 
-    public void setVisible(boolean isVisivel) {
+    public void setVisivel(boolean isVisivel) {
         this.isVisivel = isVisivel;
     }
 
