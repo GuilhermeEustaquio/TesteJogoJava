@@ -3,24 +3,24 @@ package meuJogomodelo;
 import java.awt.*;
 import javax.swing.*;
 
-public class Tiro {
+public class Enemy1 {
     private Image imagem;
     private int x, y;
     private int largura, altura;
     private boolean isVisivel;
 
-    private static final int LARGURA = 938;
+   // private static final int LARGURA = 938;
     private static int VELOCIDADE = 2;
 
 
-    public Tiro(int x, int y) {
+    public Enemy1(int x, int y) {
         this.x = x;
         this.y = y;
         isVisivel = true;
     }
 
     public void load() {
-        ImageIcon referencia = new ImageIcon("res\\fazol.png");
+        ImageIcon referencia = new ImageIcon("res\\bolso.png");
         imagem = referencia.getImage();
 
         this.largura = imagem.getWidth(null);
@@ -28,14 +28,10 @@ public class Tiro {
     }
 
     public void update() {
-        this.x += VELOCIDADE;
-            if(this.x > LARGURA){
-                isVisivel = false;
-            }
-    }
-
-    public Rectangle getBounds() {
-        return new Rectangle(x, y, largura, altura);
+        this.x -= VELOCIDADE;
+           // if(this.x > LARGURA){
+             //   isVisivel = false;
+            //}
     }
 
     
