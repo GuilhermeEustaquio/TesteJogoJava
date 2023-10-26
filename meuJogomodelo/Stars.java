@@ -1,26 +1,28 @@
 package meuJogomodelo;
 
 import java.awt.*;
+import java.util.Random;
+
 import javax.swing.*;
 
-public class Tiro {
+public class Stars {
     private Image imagem;
     private int x, y;
     private int largura, altura;
     private boolean isVisivel;
 
-    private static final int LARGURA = 938;
-    private static int VELOCIDADE = 6;
+   // private static final int LARGURA = 938;
+    private static int VELOCIDADE = 2;
 
 
-    public Tiro(int x, int y) {
+    public Stars(int x, int y) {
         this.x = x;
         this.y = y;
         isVisivel = true;
     }
 
     public void load() {
-        ImageIcon referencia = new ImageIcon("res\\fazol.png");
+        ImageIcon referencia = new ImageIcon("res\\neve.png");
         imagem = referencia.getImage();
 
         this.largura = imagem.getWidth(null);
@@ -28,15 +30,24 @@ public class Tiro {
     }
 
     public void update() {
-        this.x += VELOCIDADE;
-            if(this.x > LARGURA){
-                isVisivel = false;
-            }
+        if(this.x < 0){ 
+            this.x = largura;
+            Random a = new Random();
+            int m = a.nextInt(500);
+            this.x = m + 1024;
+            Random r = new Random();
+            int n = r.nextInt(576);
+            this.y  = n;
+        } else{
+
+            this.x -= VELOCIDADE;
+
+        }
+        
+        
+         
     }
 
-    public Rectangle getBounds() {
-        return new Rectangle(x,y,largura,altura);
-    }
 
     
     public boolean isVisivel() {

@@ -12,13 +12,14 @@ public class Fase extends JPanel implements ActionListener {
     private Player player;
     private Timer timer;
     private List<Enemy1> enemy1;
+    private List<Stars> stars;
     private boolean emJogo;
 
     public Fase(){
         setFocusable(true);
         setDoubleBuffered(true);
 
-        ImageIcon referencia = new ImageIcon("res\\fundo2.jpg");
+        ImageIcon referencia = new ImageIcon("res\\fundo3.png");
         fundo = referencia.getImage();
 
         player = new Player();
@@ -30,6 +31,7 @@ public class Fase extends JPanel implements ActionListener {
         timer.start();
 
         inicializaInimigos();
+        inicializaStars();
         emJogo = true;
         
     }
@@ -40,9 +42,20 @@ public class Fase extends JPanel implements ActionListener {
 
         for (int i = 0; i < coordenadas.length; i++) {
             int x = (int)(Math.random() * 8000+1024);
-            int y = (int)(Math.random() * 550 + 10); //650 + 30 quando for 728
+            int y = (int)(Math.random() * 550 + 10); //650 + 30 quando for 768
             enemy1.add(new Enemy1(x, y));
         }
+    }
+
+    public void inicializaStars() {
+        int coordenadas [ ] = new int [100];
+        stars = new ArrayList<Stars>();
+        for (int i = 0; i < coordenadas.length; i++) {
+            int x = (int)(Math.random() * 1050+1024);
+            int y = (int)(Math.random() * 577 + 0); //650 + 30 quando for 768
+            stars.add(new Stars(x, y));
+        }
+
     }
 
     
@@ -50,6 +63,13 @@ public class Fase extends JPanel implements ActionListener {
         Graphics2D graficos = (Graphics2D) g;
         if(emJogo == true){
             graficos.drawImage(fundo, 0, 0, null);
+
+            for(int p = 0; p < stars.size(); p++) {
+            Stars on = stars.get(p);
+            on.load();
+            graficos.drawImage(on.getImagem(), on.getX(), on.getY(), this);
+            }
+
             graficos.drawImage(player.getImagem(),player.getX(), player.getY(), this);
 
             List<Tiro> tiros = player.getTiros();
@@ -76,6 +96,15 @@ public class Fase extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         player.update();
+
+        for (int p = 0; p < stars.size(); p++){
+            Stars on = stars.get(p);
+                if(on.isVisivel()){
+                    on.update();
+                } else {
+                    stars.remove(p);
+                }
+        }
         
         List<Tiro> tiros = player.getTiros();
         for(int i = 0; i < tiros.size(); i++) {
